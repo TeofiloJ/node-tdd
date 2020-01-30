@@ -8,4 +8,5 @@ const Post = require('../../models').Post
 factory.define('post', Post, {
   title: factory.sequence((n) => `title${n}`),
   content: factory.sequence((n) => `content${n}`),
+  author: factory.sequence((n) => `_id${n}`),
 })
