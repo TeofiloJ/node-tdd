@@ -15,25 +15,12 @@ require('./mongoose_factories/post').factory
 require('./mongoose_factories/author').factory
 
 
-beforeAll(async () => {
-  //clearDb()
-});
-
-afterAll(async () => {
-  //clearDb()
-});
-
-
 const mongoose = require('mongoose')
 
 beforeAll(async () => {
   const url = `mongodb://localhost/node_tdd`
   await mongoose.connect(url, { useNewUrlParser: true })
   clearDB()
-
-  // const data = {firstName:'John', lastName:'Wick'} 
-  // const user = new Author(data)
-  // response = await user.save()
 })
 
 // Root Endpoint
@@ -72,7 +59,7 @@ describe('POST /author', () => {
 
   test('It should create and retrieve a post for the selected author', async () => {
     const author = await Author.findOne({_id: response.body._id})
-    expect(author._id.toString()).toBe(response.body._id) // alternative au toString ?
+    expect(author._id.toString()).toBe(response.body._id)
     expect(author.firstName).toBe(data.firstName)
     expect(author.lastName).toBe(data.lastName)
   });
