@@ -172,40 +172,68 @@ describe('GET /posts', () => {
       data.author = author._id
       post = await request.post('/post').send(data).set('Accept', 'application/json')
       response = await request.get('/posts').set('Accept', 'application/json')
-    }) 
+
+    })
 
     test('It should respond a correct post', async () => {
       expect(response.body.length).toBe(1)
       expect(response.body[0]).toStrictEqual(
-        {
-          data: [{
-            _id: post.body._id.toString(),
-            title: post.body.title,
-            content:post.body.content,
-            relationship: {
-              author: {
-                data: {id: author._id.toString()}
+          {
+            data: [{
+              _id: post.body._id.toString(),
+              title: post.body.title,
+              content:post.body.content,
+              relationship: {
+                author: {
+                  data: {id: author._id.toString()}
+                }
               }
-            }
-          }],
-          included: [
-            {
-              firstName: author.firstName,
-              lastName: author.lastName,
-              _id: author._id.toString()
-            }
-          ]
-        }
-        
+            }],
+            included: []
+          }
       )
-      // expect(response.body[0].data[0]._id).toBe(post.body._id)
-      // expect(response.body[0].data[0].title).toBe(post.body.title)
-      // expect(response.body[0].data[0].content).toBe(post.body.content)
-      // expect(response.body[0].included[0]._id).toBe(author._id)
     });
 
-
     
+  })
+  describe('when there is one or more posts included author in database', () => {
+
+    beforeAll(async () => {
+      clearDB()
+      var data = {}
+      author = await factory.create('author')
+      post = await factory.build('post')
+      data.title = post.title
+      data.content = post.content
+      data.author = author._id
+      post = await request.post('/post').send(data).set('Accept', 'application/json')
+      responseWithParams = await request.get('/posts?included=author').set('Accept', 'application/json')
+    })
+
+    test('It should respond included a correct post included', async () => {
+      expect(responseWithParams.body.length).toBe(1)
+      expect(responseWithParams.body[0]).toStrictEqual(
+          {
+            data: [{
+              _id: post.body._id.toString(),
+              title: post.body.title,
+              content:post.body.content,
+              relationship: {
+                author: {
+                  data: {id: author._id.toString()}
+                }
+              }
+            }],
+            included: [
+              {
+                firstName: author.firstName,
+                lastName: author.lastName,
+                _id: author._id.toString()
+              }
+            ]
+          }
+      )
+    });
   })
 });
 
