@@ -12,5 +12,10 @@ module.exports = (app, db) => {
     const ret = await Author.find().select('firstName lastName')
     res.json(ret)
   })
+
+  app.get('/author', async (req, res) => {
+    const ret = await Author.find({_id: req.body._id})
+    res.json(ret)
+  })
   }
   

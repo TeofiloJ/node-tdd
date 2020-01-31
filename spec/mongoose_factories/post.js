@@ -7,6 +7,6 @@ const Post = require('../../mongoose_models/post')
 
 factory.define('post', Post, {
   title: factory.sequence((n) => `title${n}`),
-  content: factory.sequence((n) => `content${n}`)
-  // author : factory.assoc('author', '_id'),
+  content: factory.sequence((n) => `content${n}`),
+  author : factory.assoc('author', '_id')
 })
