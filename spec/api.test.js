@@ -5,6 +5,13 @@ const request = supertest(app)
 const Author = require('../mongoose_models/author')
 const Post = require('../mongoose_models/post')
 
+const config = require(__dirname + '/../config/config');
+
+function getDbUrl(){
+    return "mongodb://" + config.host + "/" + config.database
+}
+
+
 function clearDB() {
   for (var i in mongoose.connection.collections) {
     mongoose.connection.collections[i].remove(function() {});
@@ -18,7 +25,7 @@ require('./mongoose_factories/author').factory
 const mongoose = require('mongoose')
 
 beforeAll(async () => {
-  const url = `mongodb://localhost/node_tdd`
+  const url = getDbUrl()
   await mongoose.connect(url, { useNewUrlParser: true })
   clearDB()
 })
