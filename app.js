@@ -32,9 +32,8 @@ app.post('/author', async (req, res) => {
     res.json(ret)
   })
 
-app.get('/author', async (req, res) => {
-  const { firstName, lastName } = req.body
-  const ret = await Author.findOne({firstName:'John',lastName:'Wick'})
+app.get('/authors', async (req, res) => {
+  const ret = await Author.find().select('firstName lastName')
   res.json(ret)
 })
 

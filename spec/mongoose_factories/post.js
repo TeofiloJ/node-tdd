@@ -1,9 +1,9 @@
-var FactoryGirl = require('factory-girl');
-var MongooseAdapter = require('factory-girl-mongoose').MongooseAdapter;
-var Factory = new FactoryGirl.Factory();
-Factory.setAdapter(MongooseAdapter);
+var factoryGirl = require('factory-girl');
+var adapter = new factoryGirl.MongooseAdapter();
+factory = factoryGirl.factory;
+factory.setAdapter(adapter);
 
-const Post = require('../../models').Post
+const Post = require('../../mongoose_models/post')
 
 factory.define('post', Post, {
   title: factory.sequence((n) => `title${n}`),
